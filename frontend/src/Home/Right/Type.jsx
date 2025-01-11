@@ -6,33 +6,34 @@ const Type = () => {
   const { sendMessages } = useSendMessage();
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await sendMessages(message)
+    if (!message.trim()) return;
+
+    await sendMessages(message);
     setMessage("");
-  }
+  };
+
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <div className="flex items-center h-[8vh] bg-gray-800 px-4">
-          {/* Input Field */}
+    <div className="bg-gray-800 border-t border-gray-700 py-4 px-4 sticky bottom-0">
+      <form onSubmit={handleSubmit} className="max-w-[1100px] mx-auto">
+        <div className="flex items-center gap-2">
           <input
             type="text"
             value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-            }}
-            placeholder="Type your message..."
-            className="flex-grow input input-bordered bg-slate-900 text-white px-4 py-2 rounded-lg outline-none"
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type a message..."
+            className="flex-1 bg-gray-700 text-white rounded-full px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-
-          {/* Send Button */}
-          <button type="submit" className="ml-2 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white">
-            <IoMdSend className="text-2xl" />
+          <button
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 transition-colors"
+          >
+            <IoMdSend className="text-xl" />
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

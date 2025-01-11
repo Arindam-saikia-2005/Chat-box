@@ -7,44 +7,32 @@ import useGetSocketMessage from "../../context/useGetSocketMessage.jsx";
 const Messages = () => {
   const { messages, loading } = useGetMessage();
   useGetSocketMessage();
-  console.log("Messages Array:", messages);
-  // console.log(
-  //   "Filtered Messages:",
-  //   messages.filter((msg) => msg && msg._id)
-  // );
-
-  if (!messages || !Array.isArray(messages)) {
-    return <p>No messages available</p>;
-  }
-
   const lastMessageRef = useRef();
+
   useEffect(() => {
-    setTimeout(() => {
-      if (lastMessageRef.current) {
-        lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }, 100);
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
+
   return (
-    <>
+    <div className="h-full overflow-y-auto px-4 py-4">
       {loading ? (
         <Loading />
-      ) : (
-        messages.length > 0 &&
+      ) : Array.isArray(messages) && messages.length > 0 ? (
         messages.map((msg) => (
           <div key={msg._id} ref={lastMessageRef}>
-            <Message msg={msg} />;
+            <Message msg={msg} />
           </div>
         ))
+      ) : (
+        <div className="flex items-center justify-center h-full">
+          <p className="text-gray-400 text-lg">
+            No messages yet. Start the conversation!
+          </p>
+        </div>
       )}
-      <div style={{ minHeight: "calc(92vh - 8vh)" }}>
-        {!loading && messages.length === 0 && (
-          <div>
-            <p className="text-center font-bold mt-[20%]">Say Hi!</p>
-          </div>
-        )}
-      </div>
-    </>
+    </div>
   );
 };
 
