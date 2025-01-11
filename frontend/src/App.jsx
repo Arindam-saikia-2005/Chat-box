@@ -4,7 +4,7 @@ import useAuth from "./context/AuthProvider";
 import Left from "./Home/left/Left";
 import Logout from "./Home/left1/Logout";
 import Right from "./Home/Right/Right";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
           element={
             authUser ? (
               <div className="flex h-screen">
-                <Logout />
+                {/* <Logout /> Removed Becuase added logout functionality in the user profile dropdown component */}
                 <Left />
                 <Right />
               </div>
@@ -37,7 +37,7 @@ function App() {
         />
       </Routes>
       {/* <Loading/> */}
-      <Toaster/>
+      <Toaster />
     </>
   );
 }

@@ -4,29 +4,30 @@ import { useSocketContext } from "../../context/SocketContext.jsx";
 
 const User = ({ user }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
-  const { socket, onlineUser } = useSocketContext();
-
+  const { onlineUser } = useSocketContext();
   const isOnline = onlineUser.includes(user._id);
   const isSelected = selectedConversation?._id === user?._id;
 
   return (
     <div
-      className={`hover:bg-slate-600 duration-300 ${
-        isSelected ? "bg-slate-700" : ""
-      }`}
       onClick={() => setSelectedConversation(user)}
+      className={`flex items-center p-4 cursor-pointer transition-all duration-200 hover:bg-gray-700/50 ${
+        isSelected ? "bg-gray-700" : ""
+      }`}
     >
-      <div className="flex space-x-4 px-8 py-7  hover:bg-slate-800 cursor-pointer">
-        <div className={`avatar ${isOnline ? "online" : ""}`}>
-          <div className="w-14 rounded-full">
-            <img src="https://tse2.mm.bing.net/th?id=OIP.a6K29ULFYz77aRqcvf5U5QHaLH&pid=Api&P=0&h=180" />
-          </div>
-        </div>
+      <div className="relative">
+        <img
+          src="https://tse2.mm.bing.net/th?id=OIP.a6K29ULFYz77aRqcvf5U5QHaLH&pid=Api&P=0&h=180"
+          className="w-12 h-12 rounded-full object-cover"
+        />
+        {isOnline && (
+          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-gray-800" />
+        )}
+      </div>
 
-        <div>
-          <h1 className="font-bold">{user.name}</h1>
-          <span>{user.email}</span>
-        </div>
+      <div className="ml-4 flex-1">
+        <h3 className="font-medium text-gray-200">{user.name}</h3>
+        <p className="text-sm text-gray-400 truncate">{user.email}</p>
       </div>
     </div>
   );

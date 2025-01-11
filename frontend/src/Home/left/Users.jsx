@@ -1,19 +1,20 @@
-import User from './User';
-import userGetAllUser from '../../context/userGetAllUser';
+import User from "./User";
+import userGetAllUser from "../../context/userGetAllUser";
 
+const Users = () => {
+  const { allUser } = userGetAllUser();
 
-const Users = ( ) => {
-  const [allUsers,loading] = userGetAllUser();
-  console.log(allUsers);
   return (
-    <div className='py-2 flex-arindam overflow-y-auto' style={{ maxHeight:"calc(94vh - 1vh)"}}>
-        {
-          allUsers.map((user,index) => {
-            return <User key={index} user={user} />
-          })
-        }
+    <div className="py-2">
+      <div className="space-y-1">
+        {allUser?.map((user) => (
+          <div key={user._id} className="px-2">
+            <User user={user} />
+          </div>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Users;

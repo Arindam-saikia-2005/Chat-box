@@ -1,35 +1,37 @@
 import { useEffect, useState } from "react";
-import useConversation from "../stateManage/useConversation.jsx";
+import useConversation from "../stateManage/useConversation";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function useGetMessage() {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useConversation();
-  console.log(selectedConversation);
 
   useEffect(() => {
     const getMessages = async () => {
+      if (!selectedConversation?._id) return;
+
       setLoading(true);
-      if (selectedConversation && selectedConversation._id) {
-        try {
-          const response = await axios.get(
-            `/api/message/get/${selectedConversation._id}`
-          );
-          console.log("response :", response.data);
-          setMessages(response.data.messages);
-        } catch (error) {
-          console.error("Error in useGetMessage :", error);
-        } finally {
-          setLoading(false);
-        }
+      try {
+        const response = await axios.get(
+          `/api/message/get/${selectedConversation._id}`
+        );
+
+        const messageData = response.data.messages || [];
+        setMessages(messageData);
+      } catch (error) {
+        console.error("Error in useGetMessage:", error);
+        toast.error("Failed to fetch messages");
+        setMessages([]);
+      } finally {
+        setLoading(false);
       }
     };
+
     getMessages();
-  }, [selectedConversation, setMessages]);
-  return {
-    loading,
-    messages: messages || []
-  };
+  }, [selectedConversation?._id]);
+
+  return { messages, loading };
 }
 
 export default useGetMessage;
